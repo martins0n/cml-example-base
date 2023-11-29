@@ -6,14 +6,12 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v4
-      - uses: iterative/setup-cml@2
-      - name: Train model
-        env:
-          REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - uses: iterative/setup-cml@v2
+      - env:
+          REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Can use the default token for most functions
         run: |
-          pip install -r requirements.txt
-          python train.py
+          python train.py --output plot.png
 
-          cat metrics.txt >> report.md
-          echo "![](./plot.png)" >> report.md
-          cml comment create report.md
+          echo 'My first CML report' > report.md
+          echo '![](./plot.png)' >> report.md
+          cml comment create --publish report.md
